@@ -1,44 +1,48 @@
+import json
+from .Database_connection import DataBaseConnection
 books_file = 'books.txt'
 
 
 def create_book_table():
-    pass
+    with DataBaseConnection() as connection: ## { Connection is whatever the DUNDER __Enter__ method returned}
+        cursor = connection.cursor()
+        cursor.execute('CREATE TABLE IF NOT EXISTS books(name text primary key, author text, read integer)') #Table
+
+    #connection.commit() # Push the DB.
+   # connection.close() # Close the connection
 
 
 def get_all_books():
-    with open(books_file, 'r') as file:
-        lines = [line.strip().split(',') for line in file.readLine()] #Strip the white space
-        return [{
-            'name': line[0], 
-            'author': line[1], 
-            'read': line[3]
-            }
-            for line in lines
-        ]
+    connection = sqlite3.connect('data.db')
+    cursor = connection.cursor()
+    cursor.execute('SELECT * FROM books') # Execute this
 
+# This allows us to end iwth a dictionary
+    books = [{'name': row[0], 'author': row[1], 'read': row[2]} for row in cursor.fetchall()] ## you wil get a list of tuples. [(name, author, read), (name, author, read)]
+    
 
-def insert_book(name, author):
-    with open(books_file, 'a') as file: ## with A mode anything we write will goto the end of the file .  ( were appending)
-        file.write(f'{name},{author}, 0')
+    connection.close()
+    return books
+def add_book(name, author):
+    connection = sqlite3.connect('data.db')
+    cursor = connection.cursor()
+    cursor.execute('INSERT INTO books VALUES (?, ?, 0)', (name, author)) #This is saafer
+
+    connection.commit() # Push the DB.
+    connection.close() # Close the conn
 
 def mark_book_as_read(name):
-    books = get_all_books()
-    for book in books:
-        read = 'YES' if book['read'] == '1' else 'NO'
-    _save_all_books(books)
-
-def _save_all_books(books):
-    with open(books_file, 'w') as file: # Writing all the books. (Not best way but we are rewriting the file. )
-        for book in books:
-            file.write(f"{book['name']}, {book['author']} {book['read']}\n")
+    ## mark all books as read
+    connection = sqlite3.connect('data.db')
+    cursor = connection.cursor()
+    cursor.execute('UPDATE books SET read=1 WHERE name=?', (name)) ## Update the book where the name is equal
+    connection.commit()
+    connection.close()
 
 def delete_book(name):
-    books = get_all_books()
-    books = [book for book in books if book ['name'] != name]
-    _save_all_books(books)
-
-
-# def delete_book(name):
-#     for book in books:
-#         if book['name'] == name:
-#             books.remove(book)
+    ## mark all books as read
+    connection = sqlite3.connect('data.db')
+    cursor = connection.cursor()
+    cursor.execute('DELETE FROM books WHERE name=?', (name)) ## Update the book where the name is equal
+    connection.commit()
+    connection.close()
