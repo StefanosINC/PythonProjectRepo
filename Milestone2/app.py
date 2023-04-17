@@ -30,7 +30,7 @@ def menu():
 def prompt_add_book():
     name = input('Enter the new book name: ')
     author = input('Enter the new book author: ')
-
+    
     database.add_book(name, author)
 
 
