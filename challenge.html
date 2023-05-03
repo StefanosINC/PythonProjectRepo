@@ -1,0 +1,12 @@
+{% extends "base.html" %} 
+{% block content %} 
+    <div class ="jumbotron">
+       <h1> Welcome to the challenge</h1>
+       <p> Please fill out this username page.  </p>
+       <form action="{{url_for('challenge')}}">
+        <label for="username">User_name:</label>
+        <input type="text" name="username">
+        <input type="submit" value="Submit Form">
+       </form>
+    </div>
+ {% endblock %}  

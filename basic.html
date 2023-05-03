@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1> Hello {{name}} {{letters}} </h1>
+    <h2> Here is a pic of a puppy </h2>
+    <h1> {{pup_dictionary['pup_name']}} </h1>
+    <h1> {{mylist}}</h1>
+
+
+        {% if user_logged_in %}
+            <p> Welcome back you are now logged in! </p>
+        {% else %}
+            <p> Please log in! </p>
+        {% endif %}
+        <!--   <ul>
+            {% for item in mylist%}
+            <li> {{item}} </li>
+            {% endfor %}
+        </ul>
+
+        {% if 1 in mylist %}
+            <p> Found you Rufus</p>
+        {% else %}
+            <p> Hmm. I am not sure if 1 is in this list </p>
+        {% endif %} -->
+
+    <!-- <img src ="../static/puppy_pic.jpg" alt=""> -->
+</body>
+</html>
